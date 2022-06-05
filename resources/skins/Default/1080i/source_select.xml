@@ -7,7 +7,7 @@
     </coordinates>
 
     <controls>
-        
+
         <!-- Background -->
         <control type="group">
             <top>0</top>
@@ -22,7 +22,7 @@
             </control>
 
             <!-- Fanart -->
-            <control type="image">    
+            <control type="image">
                 <texture background="true">$INFO[Window().Property(item.art.fanart)]</texture>
                 <colordiffuse>66FFFFFF</colordiffuse>
             </control>
@@ -48,7 +48,7 @@
 			<texture>$INFO[Window().Property(item.art.clearlogo)]</texture>
 			<visible>!String.IsEmpty(Window().Property(item.art.clearlogo))</visible>
 		</control>
-		
+
 		<!-- Scrollbar -->
 		<control type="scrollbar" id="1111">
 			<animation effect="fade" time="350" tween="cubic" easing="in" delay="350">WindowOpen</animation>
@@ -74,7 +74,7 @@
             <onright>2000</onright>
             <left>40</left>
             <top>100</top>
-            <width>1340</width>
+            <width>1450</width>
             <height>900</height>
             <itemgap>20</itemgap>
             <orientation>vertical</orientation>
@@ -82,7 +82,7 @@
 			<!-- Unfocused Source -->
             <itemlayout height="160">
                 <control type="group">
-                    <width>1200</width>
+                    <width>1450</width>
 
 					<!-- Card -->
                     <control type="image">
@@ -93,23 +93,34 @@
 
 					<!-- Release Title -->
                     <control type="label">
+                        <top>20</top>
+                        <left>10</left>
+                        <width>40</width>
+                        <height>50</height>
+                        <font>font10</font>
+                        <textcolor>66FFFFFF</textcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
+                    </control>
+                    <control type="label">
                         <top>30</top>
-                        <left>20</left>
-                        <width>1100</width>
+                        <left>60</left>
+                        <width>1390</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>66FFFFFF</textcolor>
                         <align>left</align>
                         <label>[UPPERCASE]$INFO[ListItem.Property(release_title)][/UPPERCASE]</label>
                     </control>
-                    
+
 					<control type="group">
 						<top>40</top>
 						<left>20</left>
 
 						<control type="group">
 							<top>30</top>
-						
+
 							<!-- Debrid Provider -->
 							<control type="label">
 								<width>600</width>
@@ -119,7 +130,7 @@
 								<align>left</align>
 								<label>[UPPERCASE]$INFO[ListItem.Property(debrid_provider)][/UPPERCASE]</label>
 							</control>
-						
+
 							<!-- Size -->
 							<control type="label">
 								<height>20</height>
@@ -143,7 +154,7 @@
 
 						<control type="group">
 							<top>70</top>
-							
+
 							<!-- Provider -->
 							<control type="label">
 								<width>600</width>
@@ -153,10 +164,10 @@
 								<align>left</align>
 								<label>[UPPERCASE]$INFO[ListItem.Property(provider)][/UPPERCASE]</label>
 							</control>
-							
+
 							<control type="group">
 								<right>20</right>
-								
+
 								<!-- Resolution & Info -->
 								<control type="label">
 									<font>font12</font>
@@ -166,7 +177,7 @@
 									<label>[UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(quality)][/COLOR] | $INFO[ListItem.Property(info_text_formatted)][/UPPERCASE]</label>
 									<visible>!String.IsEmpty(ListItem.Property(info_text_formatted))</visible>
 								</control>
-								
+
 								<!-- Resolution -->
 								<control type="label">
 									<font>font12</font>
@@ -178,14 +189,14 @@
 								</control>
 							</control>
 						</control>
-					</control>                    
+					</control>
                 </control>
             </itemlayout>
-			
+
 			<!-- Unfocused Source -->
             <focusedlayout height="160" condition="!Control.HasFocus(1000)">
                 <control type="group">
-                    <width>1200</width>
+                    <width>1450</width>
 
 					<!-- Card -->
                     <control type="image">
@@ -194,25 +205,37 @@
                         <colordiffuse>99362e33</colordiffuse>
                     </control>
 
+                    <control type="label">
+                        <top>20</top>
+                        <left>10</left>
+                        <width>40</width>
+                        <height>50</height>
+                        <font>font10</font>
+                        <textcolor>66FFFFFF</textcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
+                    </control>
+
 					<!-- Release Title -->
                     <control type="label">
                         <top>30</top>
-                        <left>20</left>
-                        <width>1100</width>
+                        <left>60</left>
+                        <width>1390</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>66FFFFFF</textcolor>
                         <align>left</align>
                         <label>[UPPERCASE]$INFO[ListItem.Property(release_title)][/UPPERCASE]</label>
                     </control>
-                    
+
 					<control type="group">
 						<top>40</top>
 						<left>20</left>
 
 						<control type="group">
 							<top>30</top>
-						
+
 							<!-- Debrid Provider -->
 							<control type="label">
 								<width>600</width>
@@ -222,7 +245,7 @@
 								<align>left</align>
 								<label>[UPPERCASE]$INFO[ListItem.Property(debrid_provider)][/UPPERCASE]</label>
 							</control>
-						
+
 							<!-- Size -->
 							<control type="label">
 								<height>20</height>
@@ -246,7 +269,7 @@
 
 						<control type="group">
 							<top>70</top>
-							
+
 							<!-- Provider -->
 							<control type="label">
 								<width>600</width>
@@ -256,10 +279,10 @@
 								<align>left</align>
 								<label>[UPPERCASE]$INFO[ListItem.Property(provider)][/UPPERCASE]</label>
 							</control>
-							
+
 							<control type="group">
 								<right>20</right>
-								
+
 								<!-- Resolution & Info -->
 								<control type="label">
 									<font>font12</font>
@@ -269,7 +292,7 @@
 									<label>[UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(quality)][/COLOR] | $INFO[ListItem.Property(info_text_formatted)][/UPPERCASE]</label>
 									<visible>!String.IsEmpty(ListItem.Property(info_text_formatted))</visible>
 								</control>
-								
+
 								<!-- Resolution -->
 								<control type="label">
 									<font>font12</font>
@@ -281,15 +304,15 @@
 								</control>
 							</control>
 						</control>
-					</control>                    
+					</control>
                 </control>
             </focusedlayout>
 
 			<!-- Focused Source -->
             <focusedlayout height="270" condition="Control.HasFocus(1000)">
                 <control type="group">
-					<width>1340</width>
-				
+					<width>1450</width>
+
 					<!-- Card -->
                     <control type="image">
                         <top>10</top>
@@ -297,20 +320,22 @@
                         <texture>white.png</texture>
                         <colordiffuse>FF362e33</colordiffuse>
                     </control>
-					
+
                     <!-- Source Icon -->
                     <control type="group">
                         <top>40</top>
                         <width>200</width>
-                        <height>200</height>                        
-                        
+                        <height>200</height>
+
 						<!-- Seren Peacock -->
+<!--
                         <control type="image">
                             <aspectratio>keep</aspectratio>
                             <texture>$INFO[Window().Property(seren.logo)]</texture>
                             <visible>String.IsEmpty(ListItem.Property(provider.image))</visible>
                         </control>
-						
+-->
+
 						<!-- Provider Icon -->
                         <control type="image">
                             <aspectratio>keep</aspectratio>
@@ -318,12 +343,24 @@
                             <visible>!String.IsEmpty(ListItem.Property(provider.image))</visible>
                         </control>
                     </control>
-                    
+
+                    <control type="label">
+                        <top>20</top>
+                        <left>10</left>
+                        <width>40</width>
+                        <height>50</height>
+                        <font>font10</font>
+                        <textcolor>66FFFFFF</textcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
+                    </control>
+
 					<!-- Release Title -->
                     <control type="label">
-                        <top>40</top>
-                        <left>210</left>
-                        <width>1110</width>
+                        <top>75</top>
+                        <left>10</left>
+                        <width>1425</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>FFFFFFFF</textcolor>
@@ -336,9 +373,9 @@
 					<control type="group">
 						<width>800</width>
 						<height>70</height>
-						<left>210</left>	
+						<left>210</left>
 						<top>100</top>
-						
+
 						<!-- Debrid Provider -->
 						<control type="label">
 							<font>font12</font>
@@ -348,7 +385,7 @@
 							<wrapmultiline>true</wrapmultiline>
 							<label>[B][UPPERCASE]$INFO[ListItem.Property(debrid_provider)][/UPPERCASE][/B]</label>
 						</control>
-						
+
 						<!-- Provider -->
 						<control type="label">
 							<top>40</top>
@@ -360,12 +397,12 @@
 							<label>[B][UPPERCASE]$INFO[ListItem.Property(provider)][/UPPERCASE][/B]</label>
 						</control>
 					</control>
-                    
+
                     <control type="group">
                         <right>20</right>
                         <top>100</top>
 						<height>140</height>
-						
+
 						<!-- Size -->
                         <control type="label">
                             <right>0</right>
@@ -400,7 +437,7 @@
                             <textcolor>FFFFFFFF</textcolor>
                             <label>[B][UPPERCASE]$ADDON[plugin.video.seren 30252]: [COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE][/B]</label>
                         </control>
-                        
+
 						<!-- Info -->
 						<control type="label">
 							<top>120</top>
@@ -421,13 +458,13 @@
 			<animation effect="slide" end="600,0" time="350" tween="cubic" easing="in">WindowClose</animation>
             <top>110</top>
             <right>20</right>
-            <width>500</width>
-            
+            <width>400</width>
+
 			<!-- Media Info -->
             <control type="group">
-                <width>500</width>
+                <width>400</width>
                 <height>120</height>
-                
+
 				<!-- Card -->
                 <control type="image">
                     <texture>white.png</texture>
@@ -435,7 +472,7 @@
                 </control>
 
                 <control type="group">
-                    <width>472</width>
+                    <width>372</width>
 
 					<!-- TV Show Title -->
                     <control type="label">
@@ -446,7 +483,7 @@
                         <visible>!String.IsEmpty(Window().Property(item.info.season))</visible>
                         <label>[B][COLOR $INFO[Window().Property(settings.color)]][UPPERCASE]$INFO[Window().Property(item.info.tvshowtitle)][/UPPERCASE][/COLOR][/B]</label>
                     </control>
-                    
+
 					<!-- Movie Title -->
                     <control type="label">
                         <top>25</top>
@@ -456,7 +493,7 @@
                         <visible>String.IsEmpty(Window().Property(item.info.season))</visible>
                         <label>[B][COLOR $INFO[Window().Property(settings.color)]][UPPERCASE]$INFO[Window().Property(item.info.title)][/UPPERCASE][/COLOR][/B]</label>
                     </control>
-                    
+
 					<!-- Season & Episode -->
                     <control type="label">
                         <top>65</top>
@@ -467,7 +504,7 @@
                         <visible>!String.IsEmpty(Window().Property(item.info.season))</visible>
                         <label>Season: [COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(item.info.season)] [/COLOR] | Episode: [COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(item.info.episode)][/COLOR]</label>
                     </control>
-                    
+
 					<!-- Year & Rating -->
                     <control type="label">
                         <top>65</top>
@@ -483,22 +520,22 @@
 
 			<!-- Plot -->
             <control type="group">
-                <width>500</width>
+                <width>400</width>
                 <height>530</height>
                 <top>130</top>
-                
+
 				<!-- Card -->
                 <control type="image">
                     <texture>white.png</texture>
                     <colordiffuse>99362e33</colordiffuse>
                 </control>
-                
+
                 <control type="label">
                     <wrapmultiline>true</wrapmultiline>
                     <top>20</top>
                     <left>20</left>
                     <height>480</height>
-                    <width>460</width>
+                    <width>360</width>
                     <font>font12</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <align>left</align>
@@ -510,20 +547,20 @@
 			<!-- Buttons -->
             <control type="group">
                 <top>670</top>
-                <width>500</width>
+                <width>400</width>
                 <height>220</height>
-                
+
 				<!-- Card -->
                 <control type="image">
                     <texture>white.png</texture>
                     <colordiffuse>99362e33</colordiffuse>
                 </control>
-                
+
                 <control type="grouplist" id="2000">
                     <top>25</top>
                     <onleft>1000</onleft>
                     <itemgap>10</itemgap>
-                
+
 					<!-- View Uncached -->
                     <control type="button" id="2001">
                         <height>80</height>
@@ -534,7 +571,7 @@
                         <align>right</align>
                         <textcolor>FFFFFFFF</textcolor>
                     </control>
-                
+
 					<!-- Close -->
                     <control type="button" id="2999">
                         <height>80</height>
