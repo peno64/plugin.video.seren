@@ -19,26 +19,38 @@
             <control type="image">
                 <texture>white.png</texture>
                 <colordiffuse>FF000000</colordiffuse>
+                <animation effect="fade" end="0" time="350" tween="cubic" easing="in" condition="String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
+                <visible>!String.IsEqual(Window().Property(instant_close),true)</visible>
             </control>
 
             <!-- Fanart -->
             <control type="image">
                 <texture background="true">$INFO[Window().Property(item.art.fanart)]</texture>
                 <colordiffuse>66FFFFFF</colordiffuse>
+                <animation effect="fade" end="0" time="350" tween="cubic" easing="in" condition="String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
+                <visible>!String.IsEqual(Window().Property(instant_close),true)</visible>
             </control>
 
             <!-- Overlay -->
             <control type="image">
 				<texture background="true">white.png</texture>
 				<colordiffuse>CC000000</colordiffuse>
+                <animation effect="fade" end="0" time="350" tween="cubic" easing="in" condition="String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
+                <visible>!String.IsEqual(Window().Property(instant_close),true)</visible>
 			</control>
         </control>
 
 		<!-- Clearlogo -->
 		<control type="image">
 			<animation type="WindowOpen">
-				<effect type="slide" start="841,481" time="350" tween="cubic" easing="in"/>
+                <effect type="slide" start="841,401" time="350" tween="cubic" easing="in"/>
 				<effect type="zoom" start="140,140" time="350" center="auto" tween="cubic" easing="in"/>
+			</animation>
+            <animation effect="fade" end="0" time="350" tween="cubic" easing="in" condition="!String.IsEqual(Window().Property(instant_close),true)">WindowClose</animation>
+            <animation effect="fade" end="0" time="350" tween="cubic" easing="in" condition="String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
+            <animation type="Conditional" condition="!String.IsEqual(Window().Property(resolving),true)">
+                <effect type="slide" start="841,401" time="350" delay="350" tween="cubic" easing="in"/>
+				<effect type="zoom" start="140,140" time="350" delay="350" center="auto" tween="cubic" easing="in"/>
 			</animation>
 			<top>20</top>
 			<left>40</left>
@@ -46,13 +58,15 @@
 			<height>78</height>
 			<aspectratio>keep</aspectratio>
 			<texture>$INFO[Window().Property(item.art.clearlogo)]</texture>
-			<visible>!String.IsEmpty(Window().Property(item.art.clearlogo))</visible>
+			<visible>!String.IsEmpty(Window().Property(item.art.clearlogo)) + !String.IsEqual(Window().Property(instant_close),true)</visible>
 		</control>
 
 		<!-- Scrollbar -->
 		<control type="scrollbar" id="1111">
 			<animation effect="fade" time="350" tween="cubic" easing="in" delay="350">WindowOpen</animation>
-			<animation effect="fade" end="0" time="350" tween="cubic" easing="in">WindowClose</animation>
+			<animation effect="fade" end="0" time="350" tween="cubic" easing="in" condition="!String.IsEqual(Window().Property(instant_close),true)">WindowClose</animation>
+            <animation effect="fade" end="0" time="350" tween="cubic" easing="in" condition="String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
+            <animation effect="fade" time="350" delay="700" tween="cubic" easing="in" condition="!String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
 			<left>10</left>
 			<top>110</top>
 			<width>20</width>
@@ -62,27 +76,31 @@
 			<texturesliderbackground colordiffuse="99362e33">white.png</texturesliderbackground>
 			<texturesliderbar colordiffuse="66FFFFFF">white.png</texturesliderbar>
 			<texturesliderbarfocus colordiffuse="$INFO[Window().Property(settings.color)]">white.png</texturesliderbarfocus>
+            <visible>!String.IsEqual(Window().Property(instant_close),true)</visible>
 		</control>
 
         <!-- Sources List -->
         <control type="list" id="1000">
 			<animation effect="slide" start="-1400,0" time="350" tween="cubic" easing="in">WindowOpen</animation>
-			<animation effect="slide" end="-1400,0" time="350" tween="cubic" easing="in">WindowClose</animation>
+			<animation effect="slide" end="-1400,0" time="350" tween="cubic" easing="in" condition="!String.IsEqual(Window().Property(instant_close),true)">WindowClose</animation>
+            <animation effect="slide" end="-1400,0" time="350" tween="cubic" easing="in" condition="String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
+            <animation effect="slide" start="-1400,0" time="350" delay="350" tween="cubic" easing="in" condition="!String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
             <viewtype label="Sources">list</viewtype>
 			<pagecontrol>1111</pagecontrol>
 			<onleft>1111</onleft>
             <onright>2000</onright>
             <left>40</left>
             <top>100</top>
-            <width>1450</width>
+            <width>1340</width>
             <height>900</height>
             <itemgap>20</itemgap>
             <orientation>vertical</orientation>
+            <visible>!String.IsEqual(Window().Property(instant_close),true)</visible>
 
 			<!-- Unfocused Source -->
             <itemlayout height="160">
                 <control type="group">
-                    <width>1450</width>
+                    <width>1200</width>
 
 					<!-- Card -->
                     <control type="image">
@@ -93,20 +111,9 @@
 
 					<!-- Release Title -->
                     <control type="label">
-                        <top>20</top>
-                        <left>10</left>
-                        <width>40</width>
-                        <height>50</height>
-                        <font>font10</font>
-                        <textcolor>66FFFFFF</textcolor>
-                        <align>left</align>
-                        <aligny>center</aligny>
-                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
-                    </control>
-                    <control type="label">
                         <top>30</top>
-                        <left>60</left>
-                        <width>1390</width>
+                        <left>20</left>
+                        <width>1100</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>66FFFFFF</textcolor>
@@ -196,7 +203,7 @@
 			<!-- Unfocused Source -->
             <focusedlayout height="160" condition="!Control.HasFocus(1000)">
                 <control type="group">
-                    <width>1450</width>
+                    <width>1200</width>
 
 					<!-- Card -->
                     <control type="image">
@@ -205,23 +212,11 @@
                         <colordiffuse>99362e33</colordiffuse>
                     </control>
 
-                    <control type="label">
-                        <top>20</top>
-                        <left>10</left>
-                        <width>40</width>
-                        <height>50</height>
-                        <font>font10</font>
-                        <textcolor>66FFFFFF</textcolor>
-                        <align>left</align>
-                        <aligny>center</aligny>
-                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
-                    </control>
-
 					<!-- Release Title -->
                     <control type="label">
                         <top>30</top>
-                        <left>60</left>
-                        <width>1390</width>
+                        <left>20</left>
+                        <width>1100</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>66FFFFFF</textcolor>
@@ -311,7 +306,7 @@
 			<!-- Focused Source -->
             <focusedlayout height="270" condition="Control.HasFocus(1000)">
                 <control type="group">
-					<width>1450</width>
+					<width>1340</width>
 
 					<!-- Card -->
                     <control type="image">
@@ -328,39 +323,25 @@
                         <height>200</height>
 
 						<!-- Seren Peacock -->
-<!--
                         <control type="image">
                             <aspectratio>keep</aspectratio>
                             <texture>$INFO[Window().Property(seren.logo)]</texture>
-                            <visible>String.IsEmpty(ListItem.Property(provider.image))</visible>
+                            <visible>String.IsEmpty(ListItem.Property(source.icon))</visible>
                         </control>
--->
 
-						<!-- Provider Icon -->
+                        <!-- Provider Icon -->
                         <control type="image">
                             <aspectratio>keep</aspectratio>
-                            <texture>$INFO[ListItem.Property(provider.image)]</texture>
-                            <visible>!String.IsEmpty(ListItem.Property(provider.image))</visible>
+                            <texture>$INFO[ListItem.Property(source.icon)]</texture>
+                            <visible>!String.IsEmpty(ListItem.Property(source.icon))</visible>
                         </control>
-                    </control>
-
-                    <control type="label">
-                        <top>20</top>
-                        <left>10</left>
-                        <width>40</width>
-                        <height>50</height>
-                        <font>font10</font>
-                        <textcolor>66FFFFFF</textcolor>
-                        <align>left</align>
-                        <aligny>center</aligny>
-                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
                     </control>
 
 					<!-- Release Title -->
                     <control type="label">
-                        <top>75</top>
-                        <left>10</left>
-                        <width>1425</width>
+                        <top>40</top>
+                        <left>210</left>
+                        <width>1110</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>FFFFFFFF</textcolor>
@@ -455,14 +436,17 @@
         <!-- Side Info -->
         <control type="group">
 			<animation effect="slide" start="600,0" time="350" tween="cubic" easing="in">WindowOpen</animation>
-			<animation effect="slide" end="600,0" time="350" tween="cubic" easing="in">WindowClose</animation>
+			<animation effect="slide" end="600,0" time="350" tween="cubic" easing="in" condition="!String.IsEqual(Window().Property(instant_close),true)">WindowClose</animation>
+            <animation effect="slide" end="600,0" time="350" tween="cubic" easing="in" condition="String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
+            <animation effect="slide" start="600,0" delay="350" time="350" tween="cubic" easing="in" condition="!String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
             <top>110</top>
             <right>20</right>
-            <width>400</width>
+            <width>500</width>
+            <visible>!String.IsEqual(Window().Property(instant_close),true)</visible>
 
 			<!-- Media Info -->
             <control type="group">
-                <width>400</width>
+                <width>500</width>
                 <height>120</height>
 
 				<!-- Card -->
@@ -472,7 +456,7 @@
                 </control>
 
                 <control type="group">
-                    <width>372</width>
+                    <width>472</width>
 
 					<!-- TV Show Title -->
                     <control type="label">
@@ -520,7 +504,7 @@
 
 			<!-- Plot -->
             <control type="group">
-                <width>400</width>
+                <width>500</width>
                 <height>530</height>
                 <top>130</top>
 
@@ -535,7 +519,7 @@
                     <top>20</top>
                     <left>20</left>
                     <height>480</height>
-                    <width>360</width>
+                    <width>460</width>
                     <font>font12</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <align>left</align>
@@ -547,7 +531,7 @@
 			<!-- Buttons -->
             <control type="group">
                 <top>670</top>
-                <width>400</width>
+                <width>500</width>
                 <height>220</height>
 
 				<!-- Card -->

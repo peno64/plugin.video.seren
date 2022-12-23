@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, unicode_literals
-
 from resources.lib.database.skinManager import SkinManager
+from resources.lib.modules.exceptions import NoPlayableSourcesException
 from resources.lib.modules.globals import g
 
 
@@ -11,15 +9,6 @@ def source_select(uncached_sources, source_list, item_information):
     try:
         if len(source_list) == 0 and len(uncached_sources) == 0:
             return None
-
-        f = open("/storage/downloads/names.txt","w+")
-        i = 0
-        for n in source_list:
-            i = i + 1
-            n['counter'] = i
-            f.write(n['release_title'] + "\n")
-
-        f.close()
 
         from resources.lib.gui.windows.source_select import SourceSelect
 
@@ -37,7 +26,7 @@ def source_select(uncached_sources, source_list, item_information):
 
         if selection is None:
             g.notification(g.ADDON_NAME, g.get_language_string(30032), time=5000)
-            raise Exception
+            raise NoPlayableSourcesException
         if not selection:
             g.cancel_playback()
 
