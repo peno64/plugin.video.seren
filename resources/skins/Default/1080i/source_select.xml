@@ -91,7 +91,7 @@
             <onright>2000</onright>
             <left>40</left>
             <top>100</top>
-            <width>1340</width>
+            <width>1450</width>
             <height>900</height>
             <itemgap>20</itemgap>
             <orientation>vertical</orientation>
@@ -100,7 +100,7 @@
 			<!-- Unfocused Source -->
             <itemlayout height="160">
                 <control type="group">
-                    <width>1200</width>
+                    <width>1450</width>
 
 					<!-- Card -->
                     <control type="image">
@@ -109,11 +109,23 @@
                         <colordiffuse>99362e33</colordiffuse>
                     </control>
 
+					<!-- Counter -->
+                    <control type="label">
+                        <top>20</top>
+                        <left>10</left>
+                        <width>40</width>
+                        <height>50</height>
+                        <font>font10</font>
+                        <textcolor>66FFFFFF</textcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
+                    </control>
 					<!-- Release Title -->
                     <control type="label">
                         <top>30</top>
-                        <left>20</left>
-                        <width>1100</width>
+                        <left>60</left>
+                        <width>1390</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>66FFFFFF</textcolor>
@@ -203,7 +215,7 @@
 			<!-- Unfocused Source -->
             <focusedlayout height="160" condition="!Control.HasFocus(1000)">
                 <control type="group">
-                    <width>1200</width>
+                    <width>1450</width>
 
 					<!-- Card -->
                     <control type="image">
@@ -212,11 +224,24 @@
                         <colordiffuse>99362e33</colordiffuse>
                     </control>
 
+					<!-- Counter -->
+                    <control type="label">
+                        <top>20</top>
+                        <left>10</left>
+                        <width>40</width>
+                        <height>50</height>
+                        <font>font10</font>
+                        <textcolor>66FFFFFF</textcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
+                    </control>
+
 					<!-- Release Title -->
                     <control type="label">
                         <top>30</top>
-                        <left>20</left>
-                        <width>1100</width>
+                        <left>60</left>
+                        <width>1390</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>66FFFFFF</textcolor>
@@ -306,7 +331,7 @@
 			<!-- Focused Source -->
             <focusedlayout height="270" condition="Control.HasFocus(1000)">
                 <control type="group">
-					<width>1340</width>
+					<width>1450</width>
 
 					<!-- Card -->
                     <control type="image">
@@ -323,11 +348,13 @@
                         <height>200</height>
 
 						<!-- Seren Peacock -->
+<!--
                         <control type="image">
                             <aspectratio>keep</aspectratio>
                             <texture>$INFO[Window().Property(seren.logo)]</texture>
                             <visible>String.IsEmpty(ListItem.Property(source.icon))</visible>
                         </control>
+-->
 
                         <!-- Provider Icon -->
                         <control type="image">
@@ -337,11 +364,24 @@
                         </control>
                     </control>
 
+					<!-- Counter -->
+                    <control type="label">
+                        <top>20</top>
+                        <left>10</left>
+                        <width>40</width>
+                        <height>50</height>
+                        <font>font10</font>
+                        <textcolor>66FFFFFF</textcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>[B][UPPERCASE]$INFO[ListItem.Property(counter)][/UPPERCASE][/B]</label>
+                    </control>
+
 					<!-- Release Title -->
                     <control type="label">
-                        <top>40</top>
-                        <left>210</left>
-                        <width>1110</width>
+                        <top>75</top>
+                        <left>10</left>
+                        <width>1425</width>
                         <height>20</height>
                         <font>font12</font>
                         <textcolor>FFFFFFFF</textcolor>
@@ -441,12 +481,12 @@
             <animation effect="slide" start="600,0" delay="350" time="350" tween="cubic" easing="in" condition="!String.IsEqual(Window().Property(resolving),true)">Conditional</animation>
             <top>110</top>
             <right>20</right>
-            <width>500</width>
+            <width>400</width>
             <visible>!String.IsEqual(Window().Property(instant_close),true)</visible>
 
 			<!-- Media Info -->
             <control type="group">
-                <width>500</width>
+                <width>400</width>
                 <height>120</height>
 
 				<!-- Card -->
@@ -456,7 +496,7 @@
                 </control>
 
                 <control type="group">
-                    <width>472</width>
+                    <width>372</width>
 
 					<!-- TV Show Title -->
                     <control type="label">
@@ -504,7 +544,7 @@
 
 			<!-- Plot -->
             <control type="group">
-                <width>500</width>
+                <width>400</width>
                 <height>530</height>
                 <top>130</top>
 
@@ -519,7 +559,7 @@
                     <top>20</top>
                     <left>20</left>
                     <height>480</height>
-                    <width>460</width>
+                    <width>360</width>
                     <font>font12</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <align>left</align>
@@ -531,7 +571,7 @@
 			<!-- Buttons -->
             <control type="group">
                 <top>670</top>
-                <width>500</width>
+                <width>400</width>
                 <height>220</height>
 
 				<!-- Card -->
