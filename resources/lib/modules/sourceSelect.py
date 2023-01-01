@@ -10,14 +10,20 @@ def source_select(uncached_sources, source_list, item_information):
         if len(source_list) == 0 and len(uncached_sources) == 0:
             return None
 
-        f = open("/storage/downloads/names.txt","w+")
+        try:
+            f = open("/storage/downloads/names.txt","w+")
+        except:
+            f = None
+
         i = 0
         for n in source_list:
             i = i + 1
             n['counter'] = i
-            f.write(n['release_title'] + "\n")
+            if not f is None:
+                f.write(n['release_title'] + "\n")
 
-        f.close()
+        if not f is None:
+            f.close()
 
         from resources.lib.gui.windows.source_select import SourceSelect
 
