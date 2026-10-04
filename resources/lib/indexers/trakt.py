@@ -577,6 +577,14 @@ class TraktAPI(ApiBase):
         :return: request response
         """
         timeout = params.pop("timeout", 10)
+
+        # --- START FIX FOR TRAKT API NEXT UP ---
+        if "watched/shows" in url:
+            url = url.replace("extended=full", "extended=progress")
+            if "extended=progress" not in url:
+                params["extended"] = "progress"
+        # --- END FIX ---
+
         self._try_add_default_paging(params)
         self._clean_params(params)
         return self.session.get(
@@ -585,6 +593,22 @@ class TraktAPI(ApiBase):
             headers=self._get_headers(),
             timeout=timeout,
         )
+#    def get(self, url, **params):
+#        """
+#        Performs a GET request to specified endpoint and returns response
+#        :param url: endpoint to perform request against
+#        :param params: URL params for request
+#        :return: request response
+#        """
+#        timeout = params.pop("timeout", 10)
+#        self._try_add_default_paging(params)
+#        self._clean_params(params)
+#        return self.session.get(
+#            parse.urljoin(self.ApiUrl, url),
+#            params=params,
+#            headers=self._get_headers(),
+#            timeout=timeout,
+#        )
 
     def _try_add_default_paging(self, params):
         if "page" not in params and "limit" in params:
@@ -610,6 +634,17 @@ class TraktAPI(ApiBase):
         :param params: URL params for request
         :return: JSON response
         """
+        # --- START FIX FOR TRAKT API PAGINATION ---
+        if "watched/" in url:
+            all_results = []
+            for page_data in self.get_all_pages_json(url, **params):
+                if isinstance(page_data, list):
+                    all_results.extend(page_data)
+                elif page_data:
+                    all_results.append(page_data)
+            return all_results
+        # --- END FIX ---
+
         response = self.get(url=url, **params)
         if response is None:
             return None
@@ -628,6 +663,37 @@ class TraktAPI(ApiBase):
             )
             return None
 
+#    def get_json(self, url, **params):
+#        """
+#        Performs a GET request to specified endpoint, sorts results and returns JSON response
+#        :param url: endpoint to perform request against
+#        :param params: URL params for request
+#        :return: JSON response
+#        """
+#        sort_by = params.pop("sort_by", None)
+#        sort_how = params.pop("sort_how", None)
+#
+#        response = self.get(url=url, **params)
+#        if response is None:
+#            return None
+#        try:
+#            effective_sort_by = sort_by if sort_by is not None else response.headers.get("X-Sort-By")
+#            effective_sort_how = sort_how if sort_how is not None else response.headers.get("X-Sort-How")
+#
+#            return self._handle_response(
+#                self._try_sort(
+#                    effective_sort_by,
+#                    effective_sort_how,
+#                    response.json(),
+#                )
+#            )
+#        except (ValueError, AttributeError) as e:
+#            g.log(
+#                f"Failed to receive JSON from Trakt response - response: {response} - error - {e}",
+#                "error",
+#            )
+#            return None
+
     @use_cache()
     def get_cached(self, url, **params):
         """
@@ -640,6 +706,9 @@ class TraktAPI(ApiBase):
 
     @handle_single_item_or_list
     def _handle_response(self, item):
+        if isinstance(item, list):
+            return [self._handle_response(i) for i in item]
+
         item = self._try_detect_type(item)
         item = self._try_flatten_if_single_type(item)
 

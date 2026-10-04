@@ -25,6 +25,7 @@ from resources.lib.database.torrentCache import TorrentCache
 from resources.lib.debrid import all_debrid
 from resources.lib.debrid import premiumize
 from resources.lib.debrid import real_debrid
+from resources.lib.debrid import torbox
 from resources.lib.gui.windows.get_sources_window import GetSourcesWindow
 from resources.lib.gui.windows.manual_caching import ManualCacheWindow
 from resources.lib.modules import monkey_requests
@@ -32,6 +33,7 @@ from resources.lib.modules import resolver as resolver
 from resources.lib.modules.cloud_scrapers import AllDebridCloudScraper
 from resources.lib.modules.cloud_scrapers import PremiumizeCloudScraper
 from resources.lib.modules.cloud_scrapers import RealDebridCloudScraper
+from resources.lib.modules.cloud_scrapers import TorBoxCloudScraper
 from resources.lib.modules.globals import g
 from resources.lib.modules.source_sorter import SourceSorter
 
@@ -381,6 +383,7 @@ class Sources:
             (g.get_bool_setting('premiumize.torrents') and g.premiumize_enabled())
             or (g.get_bool_setting('rd.torrents') and g.real_debrid_enabled())
             or (g.get_bool_setting('alldebrid.torrents') and g.all_debrid_enabled())
+            or (g.get_bool_setting('tb.torrents') and g.torbox_enabled())
         )
 
     @staticmethod
@@ -389,6 +392,7 @@ class Sources:
             (g.get_bool_setting('premiumize.hosters') and g.premiumize_enabled())
             or (g.get_bool_setting('rd.hosters') and g.real_debrid_enabled())
             or (g.get_bool_setting('alldebrid.hosters') and g.all_debrid_enabled())
+            or (g.get_bool_setting('tb.hosters') and g.torbox_enabled())
         )
 
     def _store_torrent_results(self, torrent_list):
@@ -758,6 +762,11 @@ class Sources:
                     "setting": "alldebrid.cloudInspection",
                     "provider": AllDebridCloudScraper,
                     "enabled": g.all_debrid_enabled(),
+                },
+                {
+                    "setting": "tb.cloudInspection",
+                    "provider": TorBoxCloudScraper,
+                    "enabled": g.torbox_enabled(),
                 },
             ]
 
@@ -1140,26 +1149,20 @@ class TorrentCacheCheck:
 
         if g.all_debrid_enabled() and g.get_bool_setting('alldebrid.torrents'):
             self.threads.put(self._all_debrid_worker, copy.deepcopy(torrent_list))
+
+        if g.torbox_enabled() and g.get_bool_setting('tb.torrents'):
+            self.threads.put(self._torbox_worker, copy.deepcopy(torrent_list))
         self.threads.wait_completion()
 
     def _all_debrid_worker(self, torrent_list):
-
         try:
-            api = all_debrid.AllDebrid()
-
             if len(torrent_list) == 0:
                 return
-
-            cache_check = api.check_hash([i['hash'] for i in torrent_list])
-
-            if not cache_check:
-                return
-
-            for idx, i in enumerate(torrent_list):
+            
+            for i in torrent_list:
                 try:
-                    if cache_check['magnets'][idx]['instant'] is True:
-                        i['debrid_provider'] = 'all_debrid'
-                        self.store_torrent(i)
+                    i['debrid_provider'] = 'all_debrid'
+                    self.store_torrent(i)
                 except KeyError:
                     g.log(
                         "KeyError in AllDebrid Cache check worker. "
@@ -1171,21 +1174,11 @@ class TorrentCacheCheck:
             g.log_stacktrace()
 
     def _realdebrid_worker(self, torrent_list, info):
-
         try:
-            hash_list = [i['hash'] for i in torrent_list]
-            api = real_debrid.RealDebrid()
-            real_debrid_cache = api.check_hash(hash_list)
-
             for i in torrent_list:
                 with contextlib.suppress(KeyError):
-                    if 'rd' not in real_debrid_cache.get(i['hash'], {}):
-                        continue
-                    if len(real_debrid_cache[i['hash']]['rd']) >= 1:
-                        if self.scraper_class.media_type == 'episode':
-                            self._handle_episode_rd_worker(i, real_debrid_cache, info)
-                        else:
-                            self._handle_movie_rd_worker(i, real_debrid_cache)
+                    i['debrid_provider'] = 'real_debrid'
+                    self.store_torrent(i)
         except Exception:
             g.log_stacktrace()
 
@@ -1221,6 +1214,21 @@ class TorrentCacheCheck:
         except Exception:
             g.log_stacktrace()
 
+    def _torbox_worker(self, torrent_list):
+        try:
+            hash_list = [i['hash'] for i in torrent_list]
+            if not hash_list:
+                return
+            cached_hashes = torbox.TorBox().check_hash(hash_list)
+            if not cached_hashes:
+                return
+            for i in torrent_list:
+                if i['hash'].lower() in [h.lower() for h in cached_hashes]:
+                    i['debrid_provider'] = 'torbox'
+                    self.store_torrent(i)
+        except Exception:
+            g.log_stacktrace()
+
 
 class SourceWindowAdapter:
     """
@@ -1244,6 +1252,10 @@ class SourceWindowAdapter:
     def create(self):
         if self.silent:
             return
+        if self.display_style == 2:
+            self.background_dialog = xbmcgui.DialogProgressBG()
+            self.background_dialog.create("Loading","")
+            g.close_busy_dialog()
         if self.display_style == 1:
             # this one is deleted in `close()`
             self.background_dialog = xbmcgui.DialogProgressBG()
@@ -1278,13 +1290,15 @@ class SourceWindowAdapter:
             self.dialog.setProperty("runtime", str(f"{round(runtime, 2)} {g.get_language_string(30554)}"))
         elif self.display_style == 1 and self.background_dialog:
             self.background_dialog.update(progress, message=text)
+        elif self.display_style == 2 and self.background_dialog:
+            self.background_dialog.update(progress)
 
     def set_property(self, key, value):
         if self.silent:
             return
         if self.display_style == 0 and self.dialog:
             self.dialog.setProperty(key, str(value))
-        elif self.display_style == 1:
+        elif self.display_style == 1 or self.display_style == 2:
             return
 
     def set_progress(self, progress):
@@ -1292,7 +1306,7 @@ class SourceWindowAdapter:
             return
         if self.display_style == 0 and self.dialog:
             self.dialog.setProgress(progress)
-        elif self.display_style == 1 and self.background_dialog:
+        elif (self.display_style == 1 or self.display_style == 2) and self.background_dialog:
             self.background_dialog.update(progress)
 
     def close(self):
@@ -1301,6 +1315,6 @@ class SourceWindowAdapter:
         if self.display_style == 0 and self.dialog:
             self.dialog.close()
             del self.dialog
-        elif self.display_style == 1 and self.background_dialog:
+        elif (self.display_style == 1 or self.display_style == 2) and self.background_dialog:
             self.background_dialog.close()
             del self.background_dialog
